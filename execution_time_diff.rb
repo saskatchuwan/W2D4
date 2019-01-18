@@ -62,10 +62,55 @@ def lcs_1(array)
     sub_arrs.max_by { |arr| arr.reduce(:+) }.reduce(:+)
 end
 
+def lcs_2(array)
+    max_sum = array.first    #5
+    curr_sum = array.first   #-1
+
+    array.each_with_index do |num, i| 
+        next if i == 0
+        if curr_sum == 0 #need to revise    
+            if max_sum + num > max_sum  #5+7
+                max_sum += num           
+            elsif num > max_sum       
+                max_sum = num
+            else                       
+                curr_sum = max_sum + num    #curr_sum = -1
+                curr_sum = array[i+1]
+            end
+        else
+            if num + curr_sum > max_sum
+                max_sum = num + curr_sum
+                curr_sum = 0
+            end
+        end
+    end
+
+    return max_sum
+end
+
+# def lcs_2(array)
+#     sum = array.first
+#     array.each_with_index do |num, i|
+#         next if i == 0
+#         left = array[1..i]
+#         right = array[i..-1]
+#         if num > sum
+#             sum = num
+#         elsif left.reduce(:+)
+#             sum = left.reduce(:+)
+#         elsif right.reduce(:+)
+#             sum = right.reduce(:+)
+#         else
+
+#         end
+#     end
+#     sum
+# end
 
 
 if $PROGRAM_NAME == __FILE__
     #my_min1([ 0, 3, 5, 4, -5, 10, 1, 90 ])
     #my_min2([ 0, 3, 5, 4, -5, 10, 1, 90 ])
-    p lcs_1([5, 3, -7])
+    # p lcs_2([-5, -1, -3])
+    p lcs_2([2, 3, -6, 7, -6, 7])
 end
